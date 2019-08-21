@@ -10,6 +10,10 @@ import org.koin.core.context.startKoin
 class app : Application() {
     override fun onCreate() {
         super.onCreate()
+        /**
+         * Initialize SharedPreference helper library
+         * Initialize Koin
+         */
         PrefHelper.initHelper(this)
         startKoin {
             androidContext(this@app)

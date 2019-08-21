@@ -25,8 +25,11 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
+    //View Model injection with Koin
     private val vm : MainViewModel by viewModel()
+    //Stringer helper class injection with Koin
     private val stringer : Stringer = get()
+    //For noting app's current screen
     private var location = 0
     private var recipes = emptyList<Recipe>()
     private val ready = MutableLiveData<Boolean>(false)
@@ -37,6 +40,7 @@ class MainActivity : AppCompatActivity() {
         makeLoginPage()
 
         ready.observeForever {
+            //When user is logged in
             if(it) {
                 dialog.show()
                 vm.getRecipes()
@@ -44,6 +48,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         vm.recipes.observeForever {
+            //When recipes have been downloaded
             dialog.dismiss()
             recipes = it
             makeRecipesView(it)
@@ -52,6 +57,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun makeLoginPage(){
         location = 0
+        //Layouts creation with Anko
         verticalLayout {
                 val layout = this
                 textView{ text = "Recipes App - Login"; textSize = 25f }.lparams{ bottomMargin = dip(10) }
@@ -89,6 +95,7 @@ class MainActivity : AppCompatActivity() {
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     private fun makeRecipesView(recipes : List<Recipe>){
         location = 1
+        //Layouts creation with Anko
         scrollView {
             verticalLayout {
                 val layout = this
@@ -114,6 +121,7 @@ class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     private fun makeRecipeView(parentLayout : _LinearLayout, recipe : Recipe){
         location = 2
+        //Layouts creation with Anko
         parentLayout.visibility = View.GONE
         val likeBtnName : String
         val likeText : String
@@ -163,6 +171,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
+        //Back button only works when the user is on Login and Recipes Pages
         if(location == 0 || location == 1) super.onBackPressed()
     }
 }
